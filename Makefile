@@ -1,4 +1,4 @@
-REPO		?= riak
+REPO		?= rc_skel
 RIAK_TAG	 = $(shell git describe --tags)
 REVISION	?= $(shell echo $(RIAK_TAG) | sed -e 's/^$(REPO)-//')
 PKG_VERSION	?= $(shell echo $(REVISION) | tr - .)
@@ -29,7 +29,7 @@ rel: deps
 	./rebar compile generate
 
 relclean:
-	rm -rf rel/riak
+	rm -rf rel/rc_skel
 
 ##
 ## Developer targets
@@ -48,25 +48,15 @@ devclean: clean
 	rm -rf dev
 
 stage : rel
-	$(foreach dep,$(wildcard deps/*), rm -rf rel/riak/lib/$(shell basename $(dep))-* && ln -sf $(abspath $(dep)) rel/riak/lib;)
+	$(foreach dep,$(wildcard deps/*), rm -rf rel/rc_skel/lib/$(shell basename $(dep))-* && ln -sf $(abspath $(dep)) rel/rc_skel/lib;)
 
 ##
 ## Doc targets
 ##
 docs:
 	./rebar skip_deps=true doc
-	@cp -R apps/luke/doc doc/luke
-	@cp -R apps/riak_core/doc doc/riak_core
-	@cp -R apps/riak_kv/doc doc/riak_kv
+	@cp -R apps/rc_skel/doc doc/rc_skel
 
-orgs: orgs-doc orgs-README
-
-orgs-doc:
-	@emacs -l orgbatch.el -batch --eval="(riak-export-doc-dir \"doc\" 'html)"
-
-orgs-README:
-	@emacs -l orgbatch.el -batch --eval="(riak-export-doc-file \"README.org\" 'ascii)"
-	@mv README.txt README
 
 APPS = kernel stdlib sasl erts ssl tools os_mon runtime_tools crypto inets \
 	xmerl webtool snmp public_key mnesia eunit syntax_tools compiler
