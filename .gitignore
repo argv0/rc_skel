@@ -1,0 +1,4 @@
+*~
+apps/*/ebin
+deps
+rel/rc_skel
