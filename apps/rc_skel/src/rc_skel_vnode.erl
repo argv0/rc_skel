@@ -47,7 +47,7 @@
 
 %% API
 start_vnode(I) ->
-    riak_core_vnode_master:get_vnode_pid(I, riak_kv_vnode).
+    riak_core_vnode_master:get_vnode_pid(I, rc_skel_vnode).
 
 
 init([Index]) ->
